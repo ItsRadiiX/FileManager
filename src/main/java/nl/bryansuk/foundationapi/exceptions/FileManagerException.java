@@ -1,0 +1,22 @@
+package nl.bryansuk.foundationapi.exceptions;
+
+public class FileManagerException extends Exception {
+    public FileManagerException() {
+    }
+
+    public FileManagerException(String message) {
+        super(message);
+    }
+
+    public FileManagerException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public FileManagerException(Throwable cause) {
+        super(cause);
+    }
+
+    public FileManagerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+}
