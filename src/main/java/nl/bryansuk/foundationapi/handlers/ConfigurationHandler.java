@@ -49,6 +49,18 @@ public class ConfigurationHandler {
     }
 
     /**
+     * Retrieves the value associated with the specified key from the configuration.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The value associated with the specified key.
+     */
+    public @Nullable Object get(String key, Object defaultObject) {
+        Object object = get(key);
+        if (object == null) return defaultObject;
+        return object;
+    }
+
+    /**
      * Retrieves the value associated with the specified key as a String.
      *
      * @param key The key to look up in the configuration.
@@ -56,6 +68,18 @@ public class ConfigurationHandler {
      */
     public @Nullable String getText(String key){
         return (get(key) instanceof String string) ? string : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a String.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The String value associated with the specified key.
+     */
+    public @Nullable String getText(String key, String defaultValue){
+        String string = getText(key);
+        if (string == null) return defaultValue;
+        return string;
     }
 
     /**
@@ -69,6 +93,18 @@ public class ConfigurationHandler {
     }
 
     /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Number getNumber(String key, Number defaultValue){
+        Number number = getNumber(key);
+        if (number == null) return defaultValue;
+        return number;
+    }
+
+    /**
      * Retrieves the value associated with the specified key as a boolean.
      *
      * @param key The key to look up in the configuration.
@@ -76,6 +112,19 @@ public class ConfigurationHandler {
      */
     public @Nullable Boolean getBoolean(String key) {
         return (get(key) instanceof Boolean bool) ? bool : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a boolean.
+     *
+     * @param key The key to look up in the configuration.
+     * @param defaultValue The default value if no key was found.
+     * @return The boolean value associated with the specified key.
+     */
+    public @Nullable Boolean getBoolean(String key, boolean defaultValue) {
+        Boolean bool = getBoolean(key);
+        if (bool == null) return defaultValue;
+        return bool;
     }
 
     public @Nullable List<?> getList(String key){

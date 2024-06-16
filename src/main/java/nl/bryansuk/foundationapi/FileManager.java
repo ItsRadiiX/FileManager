@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +23,7 @@ public final class FileManager {
     private static BukkitTask autoReloadTask;
     private static boolean startedAutoReloading = false;
 
-    public FileManager(JavaPlugin plugin, Logger logger) throws FileManagerException {
+    public FileManager(JavaPlugin plugin, Logger logger) {
         if(instance != null){
             throw new FileManagerException("You can only have one instance of the FileManager at a time.");
         }
@@ -32,17 +31,13 @@ public final class FileManager {
         this.logger = logger;
     }
 
-    private static FileManager getInstance() throws FileManagerException {
+    private static FileManager getInstance() {
         if (instance == null) throw new FileManagerException("FileManager has not yet been initialized.");
         return instance;
     }
 
     public static Logger getLogger() {
-        try {
-            return getInstance().logger;
-        } catch (FileManagerException e) {
-            throw new RuntimeException(e);
-        }
+        return getInstance().logger;
     }
 
     public static JavaPlugin getPlugin() {
@@ -69,13 +64,7 @@ public final class FileManager {
         }
 
         if (!startedAutoReloading) {
-            autoReloadTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                for (Handler handler : autoReloadingHandlers) {
-                    if (handler.onReload()) {
-                        getLogger().debug("Reloaded: {}", handler.getFile().getName());
-                    }
-                }
-            }, (autoReloadManagerTime * 20L), (autoReloadManagerTime * 20L));
+            autoReloadTask = getAutoReloadTask(plugin, autoReloadManagerTime);
             startedAutoReloading = true;
         }
         return true;
@@ -94,6 +83,16 @@ public final class FileManager {
         }
     }
 
+    public static BukkitTask getAutoReloadTask(JavaPlugin plugin, int autoReloadManagerTime){
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            for (Handler handler : autoReloadingHandlers) {
+                if (handler.onReload()) {
+                    getLogger().debug("Reloaded: {}", handler.getFile().getName());
+                }
+            }
+        }, (autoReloadManagerTime * 20L), (autoReloadManagerTime * 20L));
+    }
+
     public static void addHandler(Handler handler) {
         if (!containsHandler(handler)) {
             autoReloadingHandlers.add(handler);
@@ -107,6 +106,5 @@ public final class FileManager {
     public static boolean containsHandler(Handler handler) {
         return autoReloadingHandlers.contains(handler);
     }
-
 
 }

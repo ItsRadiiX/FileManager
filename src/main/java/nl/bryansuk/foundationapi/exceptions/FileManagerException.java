@@ -1,6 +1,6 @@
 package nl.bryansuk.foundationapi.exceptions;
 
-public class FileManagerException extends Exception {
+public class FileManagerException extends RuntimeException {
     public FileManagerException() {
     }
 
