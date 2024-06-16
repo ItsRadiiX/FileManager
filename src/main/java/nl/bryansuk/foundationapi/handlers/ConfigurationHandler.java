@@ -131,9 +131,20 @@ public class ConfigurationHandler {
         return (get(key) instanceof List<?> list) ? list : null;
     }
 
+    public @NotNull List<?> getList(String key, @NotNull List<?> defaultList){
+        return (get(key, defaultList) instanceof List<?> list) ? list : defaultList;
+    }
+
     public @Nullable List<String> getStringList(String key){
         List<?> list = getList(key);
         if (list == null) return null;
+        return list.stream()
+                .map(String::valueOf)
+                .toList();
+    }
+
+    public @NotNull List<String> getStringList(String key, @NotNull List<String> defaultValue){
+        List<?> list = getList(key, defaultValue);
         return list.stream()
                 .map(String::valueOf)
                 .toList();
@@ -148,8 +159,20 @@ public class ConfigurationHandler {
                 .toList();
     }
 
+    public @NotNull List<Number> getNumberList(String key, @NotNull List<Number> defaultValue   ){
+        List<?> list = getList(key, defaultValue);
+        return list.stream()
+                .filter(Number.class::isInstance)
+                .map(Number.class::cast)
+                .toList();
+    }
+
     public @Nullable Map<?, ?> getMap(String key){
         return (get(key) instanceof Map<?,?> map) ? map : null;
+    }
+
+    public @NotNull Map<?, ?> getMap(String key, @NotNull Map<?, ?> defaultMap){
+        return (get(key, defaultMap) instanceof Map<?,?> map) ? map : defaultMap;
     }
 
     public @Nullable Map<String, ?> getSection(String key){
