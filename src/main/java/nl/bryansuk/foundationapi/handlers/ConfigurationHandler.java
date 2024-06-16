@@ -1,6 +1,7 @@
 package nl.bryansuk.foundationapi.handlers;
 
 import nl.bryansuk.foundationapi.converter.Converter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -9,26 +10,26 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class ConfigurationHandler {
-    protected final FileHandler<Map<String,?>> configFileHandler;
+    protected final FileHandler<Map<String,Object>> configFileHandler;
 
     /**
      * Default constructor for Config.
      */
-    public ConfigurationHandler(String path, Converter<Map<String,?>> converter, boolean defaultResource, boolean isAutoReloading) {
+    public ConfigurationHandler(String path, Converter<Map<String, Object>> converter, boolean defaultResource, boolean isAutoReloading) {
         configFileHandler = new FileHandler<>(path, converter, defaultResource, isAutoReloading);
         configFileHandler.read();
 
         checkIfAutoReloading();
     }
 
-    public ConfigurationHandler(String path, Converter<Map<String,?>> converter, boolean defaultResource) {
+    public ConfigurationHandler(String path, Converter<Map<String,Object>> converter, boolean defaultResource) {
         this(path, converter, defaultResource, false);
     }
 
     /**
      * Default constructor for Config.
      */
-    public ConfigurationHandler(String path, Converter<Map<String,?>> converter) {
+    public ConfigurationHandler(String path, Converter<Map<String,Object>> converter) {
         this(path, converter, false, false);
     }
 
@@ -54,9 +55,14 @@ public class ConfigurationHandler {
      * @param key The key to look up in the configuration.
      * @return The value associated with the specified key.
      */
-    public @Nullable Object get(String key, Object defaultObject) {
+    public @NotNull Object get(String key, @NotNull Object defaultObject) {
         Object object = get(key);
-        if (object == null) return defaultObject;
+
+        if (object == null){
+            configFileHandler.getObject().put(key, defaultObject);
+            return defaultObject;
+        }
+
         return object;
     }
 
@@ -76,10 +82,8 @@ public class ConfigurationHandler {
      * @param key The key to look up in the configuration.
      * @return The String value associated with the specified key.
      */
-    public @Nullable String getText(String key, String defaultValue){
-        String string = getText(key);
-        if (string == null) return defaultValue;
-        return string;
+    public @NotNull String getText(String key, @NotNull String defaultValue){
+        return (get(key) instanceof String string) ? string : defaultValue;
     }
 
     /**
@@ -98,10 +102,8 @@ public class ConfigurationHandler {
      * @param key The key to look up in the configuration.
      * @return The Number value associated with the specified key.
      */
-    public @Nullable Number getNumber(String key, Number defaultValue){
-        Number number = getNumber(key);
-        if (number == null) return defaultValue;
-        return number;
+    public @NotNull Number getNumber(String key, @NotNull Number defaultValue){
+        return (get(key) instanceof Number number) ? number : defaultValue;
     }
 
     /**
@@ -121,10 +123,8 @@ public class ConfigurationHandler {
      * @param defaultValue The default value if no key was found.
      * @return The boolean value associated with the specified key.
      */
-    public @Nullable Boolean getBoolean(String key, boolean defaultValue) {
-        Boolean bool = getBoolean(key);
-        if (bool == null) return defaultValue;
-        return bool;
+    public @NotNull Boolean getBoolean(String key, @NotNull Boolean defaultValue) {
+        return (get(key) instanceof Boolean bool) ? bool : defaultValue;
     }
 
     public @Nullable List<?> getList(String key){
@@ -181,7 +181,7 @@ public class ConfigurationHandler {
         configFileHandler.setAutoReloading(autoReload);
     }
 
-    public FileHandler<Map<String, ?>> getConfigFileHandler() {
+    public FileHandler<Map<String, Object>> getConfigFileHandler() {
         return configFileHandler;
     }
 }
