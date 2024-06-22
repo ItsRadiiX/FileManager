@@ -76,7 +76,7 @@ public class FileHandler<T> extends Handler {
 
             // Read file content
             if (!isFileEmpty()) {
-                T resource = converter.readFromFile(new FileInputStream(getPath()), typeReference);
+                T resource = converter.readFromFile(new FileInputStream(getFilePath()), typeReference);
                 object = resource;
                 if (defaultResource) {
                     T defaultResourceObject = converter.readFromFile(FileManager.getPlugin().getResource(getPath()), typeReference);
