@@ -29,6 +29,7 @@ public class JSONConverter<T> implements Converter<T> {
 
     @Override
     public T readFromFile(InputStream inputStream, TypeReference<T> typeReference) throws IOException {
+        if (inputStream == null) return null;
         return mapper.readValue(inputStream, typeReference);
     }
 
