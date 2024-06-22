@@ -59,7 +59,10 @@ public class ConfigurationHandler {
         Object object = get(key);
 
         if (object == null){
-            configFileHandler.getObject().put(key, defaultObject);
+            Map<String,Object> map = configFileHandler.getObject();
+            if (map != null) {
+                map.put(key, defaultObject);
+            }
             return defaultObject;
         }
 
