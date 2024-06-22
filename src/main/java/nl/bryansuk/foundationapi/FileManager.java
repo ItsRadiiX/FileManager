@@ -27,7 +27,7 @@ public final class FileManager {
         if(instance != null) {
             throw new FileManagerException("You can only have one instance of the FileManager at a time.");
         }
-        instance = this;
+        FileManager.instance = this;
         this.plugin = plugin;
         this.logger = logger;
     }
@@ -42,11 +42,7 @@ public final class FileManager {
     }
 
     public static JavaPlugin getPlugin() {
-        try {
-            return getInstance().plugin;
-        } catch (FileManagerException e) {
-            throw new RuntimeException(e);
-        }
+        return getInstance().plugin;
     }
 
     /*
