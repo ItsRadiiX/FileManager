@@ -16,17 +16,18 @@ public final class FileManager {
 
     private static FileManager instance;
 
-    public final JavaPlugin plugin;
-    public final Logger logger;
+    private final JavaPlugin plugin;
+    private final Logger logger;
 
     private static final List<Handler> autoReloadingHandlers = Collections.synchronizedList(new ArrayList<>());
     private static BukkitTask autoReloadTask;
     private static boolean startedAutoReloading = false;
 
     public FileManager(JavaPlugin plugin, Logger logger) {
-        if(instance != null){
+        if(instance != null) {
             throw new FileManagerException("You can only have one instance of the FileManager at a time.");
         }
+        instance = this;
         this.plugin = plugin;
         this.logger = logger;
     }
