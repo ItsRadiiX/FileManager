@@ -26,6 +26,7 @@ public class FileHandler<T> extends Handler {
     private final boolean defaultResource;
     /**
      * Constructs a new FileHandler object with the specified file path and default resource flag.
+     * Handler is initialized when constructor is called.
      *
      * @param path            the path to the file
      * @param defaultResource a flag indicating whether the file is a default resource
@@ -34,6 +35,18 @@ public class FileHandler<T> extends Handler {
         super(path, isAutoReloading);
         this.converter = converter;
         this.defaultResource = defaultResource;
+        initialize();
+    }
+
+    @Override
+    public void initialize(){
+        FileManager.addHandler(this);
+    }
+
+    @Override
+    public void destroy(){
+        FileManager.removeHandler(this);
+        this.object = null;
     }
 
     /**

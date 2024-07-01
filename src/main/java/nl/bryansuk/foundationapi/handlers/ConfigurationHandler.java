@@ -69,6 +69,14 @@ public class ConfigurationHandler {
         return object;
     }
 
+    public @Nullable String getString(String key){
+        return getText(key);
+    }
+
+    public @NotNull String getString(String key, @NotNull String defaultString){
+        return getText(key, defaultString);
+    }
+
     /**
      * Retrieves the value associated with the specified key as a String.
      *
@@ -107,6 +115,126 @@ public class ConfigurationHandler {
      */
     public @NotNull Number getNumber(String key, @NotNull Number defaultValue){
         return (get(key) instanceof Number number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Integer getInteger(String key){
+        return (get(key) instanceof Integer number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Integer getInteger(String key, int defaultValue){
+        return (get(key) instanceof Integer number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Double getDouble(String key){
+        return (get(key) instanceof Double number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Double getDouble(String key, double defaultValue){
+        return (get(key) instanceof Double number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Long getLong(String key){
+        return (get(key) instanceof Long number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Long getLong(String key, long defaultValue){
+        return (get(key) instanceof Long number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Short getShort(String key){
+        return (get(key) instanceof Short number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Short getShort(String key, short defaultValue){
+        return (get(key) instanceof Short number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Byte getByte(String key){
+        return (get(key) instanceof Byte number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Byte getByte(String key, byte defaultValue){
+        return (get(key) instanceof Byte number) ? number : defaultValue;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @Nullable Float getFloat(String key){
+        return (get(key) instanceof Float number) ? number : null;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key as a Number.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The Number value associated with the specified key.
+     */
+    public @NotNull Float getFloat(String key, float defaultValue){
+        return (get(key) instanceof Float number) ? number : defaultValue;
     }
 
     /**

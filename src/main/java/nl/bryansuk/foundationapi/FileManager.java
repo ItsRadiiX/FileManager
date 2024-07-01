@@ -19,7 +19,7 @@ public final class FileManager {
     private final JavaPlugin plugin;
     private final Logger logger;
 
-    private static final List<Handler> autoReloadingHandlers = Collections.synchronizedList(new ArrayList<>());
+    private static final List<Handler> handlers = Collections.synchronizedList(new ArrayList<>());
     private static BukkitTask autoReloadTask;
     private static boolean startedAutoReloading = false;
 
@@ -28,6 +28,7 @@ public final class FileManager {
             throw new FileManagerException("You can only have one instance of the FileManager at a time.");
         }
         FileManager.instance = this;
+
         this.plugin = plugin;
         this.logger = logger;
     }
@@ -82,7 +83,7 @@ public final class FileManager {
 
     public static BukkitTask getAutoReloadTask(JavaPlugin plugin, int autoReloadManagerTime){
         return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            for (Handler handler : autoReloadingHandlers) {
+            for (Handler handler : getAutoReloadingHandlers()) {
                 if (handler.onReload()) {
                     getLogger().debug("Reloaded: {}", handler.getFile().getName());
                 }
@@ -92,16 +93,24 @@ public final class FileManager {
 
     public static void addHandler(Handler handler) {
         if (!containsHandler(handler)) {
-            autoReloadingHandlers.add(handler);
+            handlers.add(handler);
         }
     }
 
     public static void removeHandler(Handler handler) {
-        autoReloadingHandlers.remove(handler);
+        handlers.remove(handler);
     }
 
     public static boolean containsHandler(Handler handler) {
-        return autoReloadingHandlers.contains(handler);
+        return handlers.contains(handler);
+    }
+
+    public static List<Handler> getAutoReloadingHandlers() {
+        return handlers.stream().filter(Handler::isAutoReloading).toList();
+    }
+
+    public static List<Handler> getHandlers(){
+        return handlers;
     }
 
 }

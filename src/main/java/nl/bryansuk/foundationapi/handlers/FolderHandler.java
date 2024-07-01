@@ -22,17 +22,7 @@ public class FolderHandler<T> extends Handler {
     }
 
     @Override
-    public boolean onReload() {
-        if (isNewVersionAvailable()){
-            initializeFiles();
-        } else {
-            fileHandlersList.forEach(FileHandler::onReload);
-        }
-        Bukkit.getPluginManager().callEvent(new FolderReloadEvent(getFile().getName()));
-        return true;
-    }
-
-    public void initializeFiles(){
+    public void initialize(){
         File[] files = getFolderFiles();
 
         clearFileHandlers();
@@ -54,6 +44,22 @@ public class FolderHandler<T> extends Handler {
         updateLastModified();
     }
 
+    @Override
+    public boolean onReload() {
+        if (isNewVersionAvailable()){
+            initialize();
+        } else {
+            fileHandlersList.forEach(FileHandler::onReload);
+        }
+        Bukkit.getPluginManager().callEvent(new FolderReloadEvent(getFile().getName()));
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+        clearFileHandlers();
+    }
+
     public List<T> getObjects(){
         return fileHandlersList.stream()
                 .map(FileHandler::getObject)
@@ -61,6 +67,7 @@ public class FolderHandler<T> extends Handler {
     }
 
     private void clearFileHandlers(){
+        fileHandlersList.forEach(FileHandler::destroy);
         fileHandlersList.clear();
     }
 

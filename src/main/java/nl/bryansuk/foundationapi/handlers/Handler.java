@@ -12,7 +12,9 @@ public abstract class Handler {
     private volatile long LastModified;
     private boolean isAutoReloading;
 
+    public abstract void initialize();
     public abstract boolean onReload();
+    public abstract void destroy();
 
     public Handler(String path, boolean isAutoReloading) {
         this.path = path;
@@ -100,5 +102,13 @@ public abstract class Handler {
 
     public boolean isFolder(){
         return getFile().isDirectory();
+    }
+
+    public boolean isAutoReloading() {
+        return isAutoReloading;
+    }
+
+    public long getLastModified() {
+        return LastModified;
     }
 }
