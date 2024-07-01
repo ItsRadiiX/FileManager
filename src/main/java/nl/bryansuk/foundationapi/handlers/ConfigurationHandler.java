@@ -1,5 +1,7 @@
 package nl.bryansuk.foundationapi.handlers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import nl.bryansuk.foundationapi.converter.Converter;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +57,43 @@ public class ConfigurationHandler {
      * @param key The key to look up in the configuration.
      * @return The value associated with the specified key.
      */
-    public @NotNull Object get(String key, @NotNull Object defaultObject) {
+    public @Nullable Object get(String key, Object defaultObject) {
+        Map<String, ?> config = getConfiguration();
+        if (config == null) return null;
+
+        Object returnObject = config.get(key);
+        return returnObject != null ? returnObject : defaultObject;
+    }
+
+    /**
+     * Retrieves the value associated with the specified key from the configuration.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The value associated with the specified key.
+     */
+    public @NotNull <T> T get(String key, T defaultObject, Class<T> classType) {
+        Map<String, ?> config = getConfiguration();
+        if (config == null) return defaultObject;
+
+        T returnObject = castObjectToType(defaultObject, classType);
+        return returnObject != null ? returnObject : defaultObject;
+    }
+
+    private @Nullable <T> T castObjectToType(@Nullable Object object, @NotNull Class<T> type){
+        try {
+            return type.cast(object);
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
+     * Retrieves the value associated with the specified key from the configuration.
+     *
+     * @param key The key to look up in the configuration.
+     * @return The value associated with the specified key.
+     */
+    public @NotNull Object getObject(String key, @NotNull Object defaultObject) {
         Object object = get(key);
 
         if (object == null){
